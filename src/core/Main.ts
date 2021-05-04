@@ -46,7 +46,9 @@ export default class Main {
                 break;
             case 'twitch':
                 let streamer = args.join(' ');
-                TwitchController.isStreamLive(streamer);
+                let info = TwitchController.isStreamLive(streamer);
+                console.log(info);
+                break;
             case 'help' || 'h':
                 Help.commands(msg);
                 break;
