@@ -19,6 +19,7 @@
     "@types/node-fetch": "^2.5.10",
     "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "twitch": "^4.5.5"
   }
 }

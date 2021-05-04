@@ -3,6 +3,8 @@ import {GBData, TopGames} from '../interfaces';
 import API from './api/API.module';
 import Trivia from './quiz/trivia.module';
 import TopRated from './top-rated/TopRated';
+import TwitchController from './twitch/twitch-controller';
+import {Help} from './util/utils';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -41,6 +43,12 @@ export default class Main {
                 let genre = args.join(' ');
                 let top = await TopRated.go(genre);
                 this.embedTop(top, msg, genre);
+                break;
+            case 'twitch':
+                let streamer = args.join(' ');
+                TwitchController.isStreamLive(streamer);
+            case 'help' || 'h':
+                Help.commands(msg);
                 break;
         }
     }
