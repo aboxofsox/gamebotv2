@@ -40,3 +40,12 @@ export interface TopGames {
     name: string;
     metacritic: number;
 }
+
+export interface StreamInfo {
+    channel_id: string | number;
+    username: string;
+    live: boolean;
+    title: string;
+    description: string;
+    embed?: string | number | object;
+}

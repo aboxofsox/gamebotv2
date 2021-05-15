@@ -19,29 +19,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = __importStar(require("fs"));
-var Trivia = /** @class */ (function () {
-    function Trivia() {
-    }
-    Trivia.draw = function () {
-        var json = fs.readFileSync(__dirname + "/questions.json");
+const fs = __importStar(require("fs"));
+class Trivia {
+    static draw() {
+        let json = fs.readFileSync(`${__dirname}/questions.json`);
         this.questions = Array.from(JSON.parse(json.toString()));
-        var rand = Math.floor(Math.random() * this.questions.length);
-        var q = {
+        let rand = Math.floor(Math.random() * this.questions.length);
+        let q = {
             q: this.questions[rand].question,
             a: this.questions[rand].answers
         };
         return q;
-    };
-    Trivia.init = function (msg) {
-        var question = this.draw();
+    }
+    static init(msg) {
+        const question = this.draw();
         console.log(question);
-        var filter = function (response) { return question.a.toLowerCase() === response.content.toLowerCase(); };
+        const filter = (response) => question.a.toLowerCase() === response.content.toLowerCase();
         msg.channel.send(question.q)
-            .then(function () { return msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] }); })
-            .then(function (collected) { msg.channel.send(collected.first().author.username + " got the answer right!"); })
-            .catch(function (collected) { return msg.channel.send('Looks like nobody got the answer right.'); });
-    };
-    return Trivia;
-}());
+            .then(() => msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] }))
+            .then(collected => { msg.channel.send(`${collected.first().author.username} got the answer right!`); })
+            .catch(collected => msg.channel.send('Looks like nobody got the answer right.'));
+    }
+}
 exports.default = Trivia;
