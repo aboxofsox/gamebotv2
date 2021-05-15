@@ -1,4 +1,4 @@
-import {Client, Message} from 'discord.js';
+import {Client, Message, Intents, CommandInteraction, Interaction, ApplicationCommandData} from 'discord.js';
 import {GBData, TopGames} from '../interfaces';
 import API from './api/API.module';
 import Trivia from './quiz/trivia.module';
@@ -10,12 +10,64 @@ dotenv.config();
 
 export default class Main {
     private static client: Client;
-    static init(token: string) {
-        Main.client = new Client();
-        Main.client.on('ready', () => console.log(`Logged in as ${Main.client.user.tag}`));
-        Main.client.login(token);
-        Main.client.on('message', (msg: Message) => this.command(msg));
+    static async init(token: string) {
 
+        
+          
+
+        Main.client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+        Main.client.login(token);
+        Main.client.once('ready', () => {
+            console.log(`Logged in as ${Main.client.user.tag}`)
+            this.cmdinit();
+        });
+        // Main.client.on('message', (msg: Message) => this.command(msg));
+
+    }
+
+    private static cmdinit() {
+        const queryData: ApplicationCommandData = {
+            name: 'search',
+            description: 'Get video game information.',
+            options: [{
+              name: 'query',
+              type: 'STRING',
+              description: 'Embeded game data.',
+              required: true,
+            }]
+        };
+
+        const topData: ApplicationCommandData = {
+            name: 'top',
+            description: 'Get top video games of a specific genre.',
+            options: [{
+                name: 'genre',
+                type: 'STRING',
+                description: 'Embeded top game data.',
+                required: true
+            }]
+        };
+
+        [queryData, topData].map(cmd => Main.client.application.commands.create(cmd));
+        Main.client.on('interaction', (interaction: Interaction) => this.cmdInt(interaction))
+
+    }
+    
+    private static async cmdInt(interaction: Interaction) {
+        if(!interaction.isCommand()) return;
+        switch(interaction.commandName) {
+            case 'search':
+                let data = await API.search(interaction.options[0].value.toString());
+                data = data.redirect ? await API.redirect(data.slug) : await API.search(interaction.options[0].value.toString());
+                this.embed(data, null, interaction);
+
+                break;
+            case 'top':
+                let top = await TopRated.go(interaction.options[0].value.toString());
+                this.embedTop(top, null, interaction.options[0].value.toString(), interaction);
+                
+                break;
+        }
     }
 
     private static async command(msg: Message) {
@@ -23,12 +75,16 @@ export default class Main {
 
         const args: string[] = msg.content.slice('!'.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
+
+        
         
         switch(command) {
             case 'gb':
                 let query = args.join(' ');
                 let data = await API.search(query);
                 data = data.redirect ? await API.redirect(data.slug) : await API.search(query);
+
+                this.client
 
                 this.embed(data, msg);
           
@@ -46,7 +102,7 @@ export default class Main {
                 break;
             case 'twitch':
                 let streamer = args.join(' ');
-                let info = TwitchController.isStreamLive(streamer);
+                let info = await TwitchController.isStreamLive(streamer);
                 console.log(info);
                 break;
             case 'help' || 'h':
@@ -55,7 +111,7 @@ export default class Main {
         }
     }
 
-    private static async embed(data: GBData, msg: Message) {
+    private static async embed(data: GBData, msg?: Message, int?: CommandInteraction) {
         const embedGB = {
             color: 0x0099ff,
             title: data.name,
@@ -96,11 +152,12 @@ export default class Main {
             }
         }
 
-        msg.channel.send({embed: embedGB});
+        // msg.channel.send({embed: embedGB});
+        int.reply({embeds: [embedGB]});
 
     }
 
-    private static async embedTop(data: object[], msg: Message, genre: string) {
+    private static async embedTop(data: object[], msg?: Message, genre?: string, int?: CommandInteraction) {
         if(data.length <= 0) return msg.channel.send('Sorry buddy, I got nothing.😟');
         const embed = {
             color: 0x0099ff,
@@ -108,6 +165,7 @@ export default class Main {
             description: `${data.map((item: any, i: number) => `${i + 1}. ${item.name} | ${(item.metacritic == null) ? 'NA' : item.metacritic},`).join('\n')}`
         }
 
-        msg.channel.send({embed: embed});
+        // msg.channel.send({embed: embed});
+        int.reply({embeds: [embed]});
     }
 }
