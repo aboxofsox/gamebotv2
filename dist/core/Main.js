@@ -62,39 +62,105 @@ var discord_js_1 = require("discord.js");
 var API_module_1 = __importDefault(require("./api/API.module"));
 var trivia_module_1 = __importDefault(require("./quiz/trivia.module"));
 var TopRated_1 = __importDefault(require("./top-rated/TopRated"));
+var twitch_controller_1 = __importDefault(require("./twitch/twitch-controller"));
+var utils_1 = require("./util/utils");
 var dotenv = __importStar(require("dotenv"));
+var Embedder_1 = __importDefault(require("./embedder/Embedder"));
+var Commands_1 = __importDefault(require("./commands/Commands"));
 dotenv.config();
 var Main = /** @class */ (function () {
     function Main() {
     }
     Main.init = function (token) {
-        var _this = this;
-        Main.client = new discord_js_1.Client();
-        Main.client.on('ready', function () { return console.log("Logged in as " + Main.client.user.tag); });
-        Main.client.login(token);
-        Main.client.on('message', function (msg) { return _this.command(msg); });
-    };
-    Main.command = function (msg) {
         return __awaiter(this, void 0, void 0, function () {
-            var args, command, _a, query, data, _b, genre, top_1;
+            return __generator(this, function (_a) {
+                Main.client = new discord_js_1.Client({ intents: [discord_js_1.Intents.FLAGS.GUILDS, discord_js_1.Intents.FLAGS.GUILD_MESSAGES] });
+                Main.client.login(token);
+                Main.client.once('ready', function () {
+                    console.log("Logged in as " + Main.client.user.tag);
+                    Commands_1.default.__init(Main.client);
+                });
+                Main.client.on('interaction', function (interaction) { return Commands_1.default.onCommand(interaction); });
+                return [2 /*return*/];
+            });
+        });
+    };
+    Main.cmdinit = function () {
+        // const queryData: ApplicationCommandData = {
+        //     name: 'search',
+        //     description: 'Get video game information.',
+        //     options: [{
+        //       name: 'query',
+        //       type: 'STRING',
+        //       description: 'Embeded game data.',
+        //       required: true,
+        //     }]
+        // };
+        // const topData: ApplicationCommandData = {
+        //     name: 'top',
+        //     description: 'Get top video games of a specific genre.',
+        //     options: [{
+        //         name: 'genre',
+        //         type: 'STRING',
+        //         description: 'Genre to pass to API.',
+        //         required: true
+        //     }]
+        // };
+        // const twitchData: ApplicationCommandData = {
+        //     name: 'twitch',
+        //     description: 'Get Twitch streamer information.',
+        //     options: [
+        //         {
+        //             name: 'channel',
+        //             type: 'STRING',
+        //             description: 'Channel name of Twitch streamer.',
+        //             required: true,
+        //         },
+        //         {
+        //             name: 'query',
+        //             type: 'STRING',
+        //             description: 'Specific information',
+        //             required: false
+        //         }
+        //     ]
+        // };
+        // [queryData, topData].map(cmd => Main.client.application.commands.create(cmd));
+        // Main.client.on('interaction', (interaction: Interaction) => this.cmdInt(interaction))
+    };
+    Main.deleteCmd = function (command) {
+        return __awaiter(this, void 0, void 0, function () {
+            var commands;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        commands = Main.client.application.commands.fetch().then(function (cmd) { return cmd; });
+                        return [4 /*yield*/, commands];
+                    case 1:
+                        (_a.sent()).map(function (cmd) {
+                            if (cmd.name === command)
+                                console.log([cmd.id, cmd.name]);
+                            console.log(cmd);
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Main.cmdInt = function (interaction) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, data, _b, top_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        if (msg.content.indexOf('!') !== 0)
+                        if (!interaction.isCommand())
                             return [2 /*return*/];
-                        args = msg.content.slice('!'.length).trim().split(/ +/g);
-                        command = args.shift().toLowerCase();
-                        _a = command;
+                        _a = interaction.commandName;
                         switch (_a) {
-                            case 'gb': return [3 /*break*/, 1];
-                            case 'ping': return [3 /*break*/, 7];
-                            case 'trivia': return [3 /*break*/, 8];
-                            case 'top': return [3 /*break*/, 9];
+                            case 'search': return [3 /*break*/, 1];
+                            case 'top': return [3 /*break*/, 7];
                         }
-                        return [3 /*break*/, 11];
-                    case 1:
-                        query = args.join(' ');
-                        return [4 /*yield*/, API_module_1.default.search(query)];
+                        return [3 /*break*/, 9];
+                    case 1: return [4 /*yield*/, API_module_1.default.search(interaction.options[0].value.toString())];
                     case 2:
                         data = _c.sent();
                         if (!data.redirect) return [3 /*break*/, 4];
@@ -102,93 +168,62 @@ var Main = /** @class */ (function () {
                     case 3:
                         _b = _c.sent();
                         return [3 /*break*/, 6];
-                    case 4: return [4 /*yield*/, API_module_1.default.search(query)];
+                    case 4: return [4 /*yield*/, API_module_1.default.search(interaction.options[0].value.toString())];
                     case 5:
                         _b = _c.sent();
                         _c.label = 6;
                     case 6:
                         data = _b;
-                        this.embed(data, msg);
-                        return [3 /*break*/, 11];
-                    case 7:
-                        msg.channel.send('pong');
-                        return [3 /*break*/, 11];
+                        // this.embed(data, null, interaction);
+                        Embedder_1.default.search(data, interaction);
+                        return [3 /*break*/, 9];
+                    case 7: return [4 /*yield*/, TopRated_1.default.go(interaction.options[0].value.toString())];
                     case 8:
-                        trivia_module_1.default.init(msg);
-                        return [3 /*break*/, 11];
-                    case 9:
-                        genre = args.join(' ');
-                        return [4 /*yield*/, TopRated_1.default.go(genre)];
-                    case 10:
                         top_1 = _c.sent();
-                        this.embedTop(top_1, msg, genre);
-                        return [3 /*break*/, 11];
-                    case 11: return [2 /*return*/];
+                        // this.embedTop(top, null, interaction.options[0].value.toString(), interaction);
+                        Embedder_1.default.top(top_1, interaction.options[0].value.toString(), interaction);
+                        return [3 /*break*/, 9];
+                    case 9: return [2 /*return*/];
                 }
             });
         });
     };
-    Main.embed = function (data, msg) {
+    Main.command = function (msg) {
         return __awaiter(this, void 0, void 0, function () {
-            var embedGB;
-            return __generator(this, function (_a) {
-                embedGB = {
-                    color: 0x0099ff,
-                    title: data.name,
-                    fields: [
-                        {
-                            name: 'Developers',
-                            value: data.developers.name,
-                            inline: true
-                        },
-                        {
-                            name: 'Publishers',
-                            value: data.publishers.name,
-                            inline: true
-                        },
-                        {
-                            name: 'Released',
-                            value: (new Date(data.updated)).toLocaleString(),
-                            inline: true
-                        },
-                        {
-                            name: 'Updated',
-                            value: data.updated,
-                            inline: true
-                        },
-                        {
-                            name: 'Metacritic',
-                            value: (data.metacritic == null) ? 'NA' : data.metacritic.toString(),
-                            inline: true
-                        },
-                        {
-                            name: 'Reddit',
-                            value: (data.reddit_name.length <= 0) ? 'NA' : data.reddit_name,
-                            inline: true
+            var args, command, _a, streamer, info;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (msg.content.indexOf('!') !== 0)
+                            return [2 /*return*/];
+                        args = msg.content.slice('!'.length).trim().split(/ +/g);
+                        command = args.shift().toLowerCase();
+                        _a = command;
+                        switch (_a) {
+                            case 'ping': return [3 /*break*/, 1];
+                            case 'trivia': return [3 /*break*/, 2];
+                            case 'twitch': return [3 /*break*/, 3];
+                            case 'help' || 'h': return [3 /*break*/, 5];
                         }
-                    ],
-                    thumbnail: {
-                        url: data.background_image
-                    }
-                };
-                msg.channel.send({ embed: embedGB });
-                return [2 /*return*/];
-            });
-        });
-    };
-    Main.embedTop = function (data, msg, genre) {
-        return __awaiter(this, void 0, void 0, function () {
-            var embed;
-            return __generator(this, function (_a) {
-                if (data.length <= 0)
-                    return [2 /*return*/, msg.channel.send('Sorry buddy, I got nothing.😟')];
-                embed = {
-                    color: 0x0099ff,
-                    title: "Top " + genre + " Games",
-                    description: "" + data.map(function (item, i) { return i + 1 + ". " + item.name + " | " + ((item.metacritic == null) ? 'NA' : item.metacritic) + ","; }).join('\n')
-                };
-                msg.channel.send({ embed: embed });
-                return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 1:
+                        msg.channel.send('pong');
+                        return [3 /*break*/, 6];
+                    case 2:
+                        trivia_module_1.default.init(msg);
+                        return [3 /*break*/, 6];
+                    case 3:
+                        streamer = args.join(' ');
+                        return [4 /*yield*/, twitch_controller_1.default.isStreamLive(streamer)];
+                    case 4:
+                        info = _b.sent();
+                        console.log(info);
+                        return [3 /*break*/, 6];
+                    case 5:
+                        utils_1.Help.commands(msg);
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
+                }
             });
         });
     };

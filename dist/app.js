@@ -1,12 +1,4 @@
 "use strict";
-/**
- *  //todo: add checks for empty, null, or invalid API calls
- *  todo: add error embed to handle errorful messages
- *  //todo: add support for image_additional
- *  todo: unique server instances with configurable questions
- *  todo: LFG
- *  todo: top rated games
- */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
