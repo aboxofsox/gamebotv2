@@ -1,11 +1,14 @@
-import {ApiClient, HelixUser, HelixChannel} from 'twitch';
+import {ApiClient, HelixUser, HelixChannel, HelixStream, Channel} from 'twitch';
 import {StaticAuthProvider} from 'twitch-auth';
+import { Interaction } from 'discord.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-export default class TwitchController {
+export default class TwitchAPI {
     private static client: ApiClient;
     private static authProvider: StaticAuthProvider;
+    private static user: HelixUser;
+    private static channel: Channel;
 
     private static authenticate() {
         const clientID = `ezzvzx6jn4hu2nj0l6r4srrm8uchzl`;
@@ -17,36 +20,40 @@ export default class TwitchController {
         console.log(this.client.clientId);
     }
 
-    private static getChannel(username: string) {
+
+    public static async __init(username: string) {
+        this.authenticate();
+        this.user = await this.client.helix.users.getUserByName(username);
+
+        if(!this.user) return false;
+        return await this.client.helix.streams.getStreamByUserId(this.user.id) !== null;
+
     }
 
-    public static async isStreamLive(username: string) {
+    private static async getUserId(username: string) {
         this.authenticate();
-        const user = await this.client.helix.users.getUserByName(username);
-        const channel = await this.client.helix.channels.getChannelInfo(user);
-        console.log(channel.name);
-        let userData = {
-            name: user.displayName,
-            description: user.description,
-            type: user.broadcasterType,
-            pfp: user.profilePictureUrl,
-        }
-        console.log(userData);
-        
-        // console.log([user.displayName, user.description, user.broadcasterType, user.profilePictureUrl]);
-        if(!user) {
-            return false;
-        }
-        return await user.getStream() !== null;
+        this.user = await this.client.helix.users.getUserByName(username);
+
+        return this.user.id;
     }
 
-    public static async getUserInfo(username: string) {
+    static async getChannel(username: string, query?: string, int?: Interaction) {
         this.authenticate();
-        const user = await this.client.helix.users.getUserByName(username);
+        if(!query) query == 'all';
+        let userid = await this.client.helix.users.getUserByName(username).then(user => user.id);
+        const channel = await this.client.kraken.channels.getChannel(userid).then(data => data);
 
-        
+        let channelData = {
+            name: channel.displayName,
+            description: channel.description,
+            url: channel.url,
+            status: channel.status,
+            followers: channel.followers,
+            views: channel.views,
+            logo: channel.logo,
+            banner: channel.profileBanner,
+        }
 
-        // console.log(userData);
-
+        return channelData;
     }
 }

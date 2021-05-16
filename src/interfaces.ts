@@ -49,3 +49,14 @@ export interface StreamInfo {
     description: string;
     embed?: string | number | object;
 }
+
+export interface TwichData {
+    name: string,
+    description: string,
+    status: string,
+    url: string,
+    followers: string | number,
+    views: string | number,
+    logo: string,
+    banner: string
+}
