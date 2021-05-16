@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, Collector } from 'discord.js';
 import * as fs from 'fs';
 import {Question} from '../../interfaces';
 

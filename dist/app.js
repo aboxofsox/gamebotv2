@@ -1,12 +1,4 @@
 "use strict";
-/**
- *  //todo: add checks for empty, null, or invalid API calls
- *  todo: add error embed to handle errorful messages
- *  //todo: add support for image_additional
- *  todo: unique server instances with configurable questions
- *  todo: LFG
- *  todo: top rated games
- */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -30,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var dotenv = __importStar(require("dotenv"));
-var Main_1 = __importDefault(require("./core/Main"));
+const dotenv = __importStar(require("dotenv"));
+const Main_1 = __importDefault(require("./core/Main"));
 dotenv.config();
 Main_1.default.init(process.env.DISCORD_TOKEN);

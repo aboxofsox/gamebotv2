@@ -40,3 +40,23 @@ export interface TopGames {
     name: string;
     metacritic: number;
 }
+
+export interface StreamInfo {
+    channel_id: string | number;
+    username: string;
+    live: boolean;
+    title: string;
+    description: string;
+    embed?: string | number | object;
+}
+
+export interface TwichData {
+    name: string,
+    description: string,
+    status: string,
+    url: string,
+    followers: string | number,
+    views: string | number,
+    logo: string,
+    banner: string
+}
