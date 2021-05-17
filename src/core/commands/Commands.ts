@@ -3,7 +3,6 @@ import Embedder from '../embedder/Embedder';
 import API from '../api/API.module';
 import TopRated from '../top-rated/TopRated';
 import TwitchAPI from '../twitch/twitch-controller';
-import Poll from '../poll/Poll';
 import {CommandData} from './CommandData';
 
 export default class Commands {
