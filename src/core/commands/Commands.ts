@@ -14,8 +14,6 @@ export default class Commands {
         CommandData.map(cmd => client.guilds.cache.get('656355090118213642').commands.create(cmd));
         CommandData.map(cmd => client.guilds.cache.get('282009242867728384').commands.create(cmd));
 
-        // Verify
-        this.verify();
     }
 
     static async delete(command: string) {
@@ -26,10 +24,6 @@ export default class Commands {
                 Commands.client.application.commands.delete(cmd.id);
             }
         })
-    }
-
-    private static verify() {
-        this.client.application.commands.fetch().then(cmd => console.log(cmd));
     }
 
     static async onCommand(interaction: Interaction) {

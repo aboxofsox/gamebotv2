@@ -29,7 +29,6 @@ export default class Trivia {
 
     static init(msg: Message) {
         const question = this.draw();
-        console.log(question);
         const filter = (response: Message) => question.a.toLowerCase() === response.content.toLowerCase();
         
 

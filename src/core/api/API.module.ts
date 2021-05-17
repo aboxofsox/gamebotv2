@@ -12,10 +12,6 @@ export default class API {
         const res = await fetch(url);
         const json = await res.json();
 
-        console.log(json);
-
-        // Fixme: is this necessary? 
-
         if(json.redirect) {
             return json;
         };
@@ -46,8 +42,6 @@ export default class API {
         const url = `https://api.rawg.io/api/games/${query}?key=${process.env.RAWG_TOKEN}`;
         const res = await fetch(url);
         const json = await res.json();
-
-        console.log(json);
 
 
         this.gbData = {

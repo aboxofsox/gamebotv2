@@ -16,8 +16,6 @@ export default class TwitchAPI {
 
         const authProvider = new StaticAuthProvider(clientID, accessToken);
         this.client = new ApiClient({authProvider: authProvider});
-
-        console.log(this.client.clientId);
     }
 
 
