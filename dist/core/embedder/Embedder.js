@@ -97,5 +97,36 @@ class Embedder {
             int.reply({ embeds: [embedData] });
         });
     }
+    static poll(options, int) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!options)
+                return int.reply(`Excuse me? 🤔`);
+            let max = options.length - 1;
+            const reactions = [
+                `1️⃣`, `2️⃣`, `3️⃣`,
+                `4️⃣`, `5️⃣`, `6️⃣`,
+                `7️⃣`, `8️⃣`, `9️⃣`,
+                `🔟`
+            ];
+            const embedData = {
+                color: 0x45f542,
+                title: options[0].value,
+                description: `${options.reduce((acc, cur, i) => cur.name !== 'message' ? [...acc, `${reactions[i - 1]} ${cur.value}`] : acc, []).join('\n \n')}`
+                // description: `${options.map((option, i) => {if (option.name !== 'message') return `${reactions[i - 1]} ${option.value}`}).join('\n \n')}`
+            };
+            int.reply({ embeds: [embedData] });
+            let id = int.id;
+            int.fetchReply().then((msg) => __awaiter(this, void 0, void 0, function* () {
+                for (let i = 0; i < max; i++) {
+                    try {
+                        yield msg.react(reactions[i]);
+                    }
+                    catch (err) {
+                        return err;
+                    }
+                }
+            }));
+        });
+    }
 }
 exports.default = Embedder;

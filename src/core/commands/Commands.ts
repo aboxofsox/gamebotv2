@@ -49,6 +49,9 @@ export default class Commands {
                 let twitchData = await TwitchAPI.getChannel(interaction.options[0].value.toString());
                 Embedder.twitch(twitchData, interaction);
                 break;
+            case 'poll':
+                let options = interaction.options.values;
+                Embedder.poll(interaction.options, interaction);
 
         }
     }

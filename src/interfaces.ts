@@ -60,3 +60,8 @@ export interface TwichData {
     logo: string,
     banner: string
 }
+
+export interface QuestionObj {
+    q: string,
+    a: string
+}
