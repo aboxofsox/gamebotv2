@@ -55,10 +55,12 @@ class Commands {
                     Embedder_1.default.top(top, interaction.options[0].value.toString(), interaction);
                     break;
                 case 'twitch':
-                    console.log('test');
                     let twitchData = yield twitch_controller_1.default.getChannel(interaction.options[0].value.toString());
                     Embedder_1.default.twitch(twitchData, interaction);
                     break;
+                case 'poll':
+                    let options = interaction.options.values;
+                    Embedder_1.default.poll(interaction.options, interaction);
             }
         });
     }

@@ -31,12 +31,48 @@ const twitchData = {
             description: 'Channel of Twitch streamers.',
             required: true
         }
-        // {
-        //     name: 'query',
-        //     type: 'STRING',
-        //     description: 'Specific information',
-        //     required: false
-        // }
     ]
 };
-exports.CommandData = [queryData, topData, twitchData];
+const pollData = {
+    name: 'poll',
+    description: 'Start a poll (max of 5)',
+    options: [
+        {
+            name: 'message',
+            type: 'STRING',
+            description: 'Message',
+            required: true
+        },
+        {
+            name: 'option1',
+            type: 'STRING',
+            description: 'Option 1',
+            required: true
+        },
+        {
+            name: 'option2',
+            type: 'STRING',
+            description: 'Option 2',
+            required: true
+        },
+        {
+            name: 'option3',
+            type: 'STRING',
+            description: 'Option 3',
+            required: false
+        },
+        {
+            name: 'option4',
+            type: 'STRING',
+            description: 'Option 4',
+            required: false
+        },
+        {
+            name: 'option5',
+            type: 'STRING',
+            description: 'Option 5',
+            required: false
+        }
+    ]
+};
+exports.CommandData = [queryData, topData, twitchData, pollData];

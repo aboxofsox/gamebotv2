@@ -1,4 +1,4 @@
-import { CommandInteraction, Interaction, ApplicationCommandData} from 'discord.js';
+import { CommandInteraction, Interaction, ApplicationCommandData, CommandInteractionOption,} from 'discord.js';
 import {GBData, TwichData} from '../../interfaces';
 
 
@@ -89,5 +89,38 @@ export default class Embedder {
 
         int.reply({embeds: [embedData]});
 
+    }
+
+    static async poll(options: CommandInteractionOption[], int: CommandInteraction) {
+        if(!options) return int.reply(`Excuse me? 🤔`);
+        let max = options.length - 1;
+        const reactions = [
+            `1️⃣`, `2️⃣`, `3️⃣`, 
+            `4️⃣`, `5️⃣`, `6️⃣`, 
+            `7️⃣`, `8️⃣`, `9️⃣`,
+            `🔟`
+        ];
+
+        const embedData = {
+            color: 0x45f542,
+            title: options[0].value,
+            // description: `${options.reduce((acc, cur, i) => cur.name !== 'message' ? [...acc, `${reactions[i - 1]} ${cur.value}`] : acc, []).join('\n \n')}`
+            description: `${options.map((option, i) => {if (option.name !== 'message') return `${reactions[i - 1]} ${option.value}`}).join('\n \n')}`
+        }
+
+        int.reply({embeds: [embedData]})
+        let id = int.id;
+        int.fetchReply().then(async msg => {
+            for(let i = 0; i < max; i++) {
+                try {
+                    await msg.react(reactions[i]);
+                } catch(err) {
+                    return err;
+                }
+            }
+        });
+
+
+        
     }
 }
