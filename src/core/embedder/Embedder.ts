@@ -101,10 +101,6 @@ export default class Embedder {
             `🔟`
         ];
 
-        /**
-         * ? 
-         */
-
         const embedData = {
             color: 0x45f542,
             title: options[0].value,
