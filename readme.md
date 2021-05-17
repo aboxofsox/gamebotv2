@@ -4,7 +4,7 @@
 Game Bot is a pretty simple Discord bot built using TypeScript. Its main functionality is just tapping into AIP endpoints, collecting the data, filter said data, and sending it to the Discord client. Nothing fancy 🙂.
 
 ## Commands
-```json
+```
 /search [query] - Get video game information from API endpoing.
 /top [genre] - Get top video games from a specific genre based on Metacritic score.
 /poll [message] [option1] [option2] [option3] [option4] [option5] - Simple poll, max options is 5.
