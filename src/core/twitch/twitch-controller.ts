@@ -11,13 +11,11 @@ export default class TwitchAPI {
     private static channel: Channel;
 
     private static authenticate() {
-        const clientID = `ezzvzx6jn4hu2nj0l6r4srrm8uchzl`;
-        const accessToken = `j364xnw33arvca6e69c8ln4zxyo1dv`;
+        const clientID = process.env.TWITCH_CLIENT_ID;
+        const accessToken = process.env.TWITCH_TOKEN;
 
         const authProvider = new StaticAuthProvider(clientID, accessToken);
         this.client = new ApiClient({authProvider: authProvider});
-
-        console.log(this.client.clientId);
     }
 
 

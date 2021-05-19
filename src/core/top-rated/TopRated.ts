@@ -17,7 +17,6 @@ export default class TopRated {
 
         json.results.slice(0, 10).map((i: any) => games.push({name: i.name, metacritic: i.metacritic}));
 
-        console.log(games.sort((a: any, b: any) => b.metacritic - a.metacritic));
         return games.sort((a: any, b: any) => b.metacritic - a.metacritic);
     }
 

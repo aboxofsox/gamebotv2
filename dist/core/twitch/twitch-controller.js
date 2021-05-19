@@ -18,8 +18,8 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class TwitchAPI {
     static authenticate() {
-        const clientID = `ezzvzx6jn4hu2nj0l6r4srrm8uchzl`;
-        const accessToken = `j364xnw33arvca6e69c8ln4zxyo1dv`;
+        const clientID = process.env.TWITCH_CLIENT_ID;
+        const accessToken = process.env.TWITCH_TOKEN;
         const authProvider = new twitch_auth_1.StaticAuthProvider(clientID, accessToken);
         this.client = new twitch_1.ApiClient({ authProvider: authProvider });
         console.log(this.client.clientId);

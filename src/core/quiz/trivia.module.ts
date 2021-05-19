@@ -6,6 +6,15 @@ export default class Trivia {
     private static questions: any[];
     private static question: object;
 
+    private static async getQuestions() {
+        const url = `https://opentdb.com/api.php?amount=50&category=15&difficulty=medium&type=multiple`;
+        const res = await fetch(url);
+        const json = await res.json();
+
+        
+
+    }
+
     private static draw() {
         let json = fs.readFileSync(`${__dirname}/questions.json`);
         this.questions = Array.from(JSON.parse(json.toString()));
@@ -20,7 +29,6 @@ export default class Trivia {
 
     static init(msg: Message) {
         const question = this.draw();
-        console.log(question);
         const filter = (response: Message) => question.a.toLowerCase() === response.content.toLowerCase();
         
 
