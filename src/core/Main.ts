@@ -12,6 +12,17 @@ export default class Main {
         Main.client.login(token);
         Main.client.once('ready', () => {
             console.log(`Logged in as ${Main.client.user.tag}`)
+            Main.client.user.setPresence({
+                status: 'online',
+                afk: false,
+                activities: [
+                    {
+                        name: 'Gamebotting',
+                        type: 'PLAYING',
+                        url: 'https://github.com/aboxofsox/gamebotv2'
+                    }
+                ]
+            })
             Commands.__init(Main.client);
         });
 
