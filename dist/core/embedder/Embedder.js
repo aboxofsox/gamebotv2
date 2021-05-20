@@ -111,8 +111,9 @@ class Embedder {
             const embedData = {
                 color: 0x45f542,
                 title: options[0].value,
-                description: `${options.reduce((acc, cur, i) => cur.name !== 'message' ? [...acc, `${reactions[i - 1]} ${cur.value}`] : acc, []).join('\n \n')}`
-                // description: `${options.map((option, i) => {if (option.name !== 'message') return `${reactions[i - 1]} ${option.value}`}).join('\n \n')}`
+                // description: `${options.reduce((acc, cur, i) => cur.name !== 'message' ? [...acc, `${reactions[i - 1]} ${cur.value}`] : acc, []).join('\n \n')}`
+                description: `${options.map((option, i) => { if (option.name !== 'message')
+                    return `${reactions[i - 1]} ${option.value}`; }).join('\n \n')}`
             };
             int.reply({ embeds: [embedData] });
             let id = int.id;

@@ -1,5 +1,5 @@
 # Game Bot V2
-### Current Version: 0.8.3
+### Current Version: 0.8.4
 
 Game Bot is a pretty simple Discord bot built using TypeScript. Its main functionality is just tapping into AIP endpoints, collecting the data, filter said data, and sending it to the Discord client. Nothing fancy 🙂.
 

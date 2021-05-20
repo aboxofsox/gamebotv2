@@ -49,7 +49,6 @@ class Trivia {
     }
     static init(msg) {
         const question = this.draw();
-        console.log(question);
         const filter = (response) => question.a.toLowerCase() === response.content.toLowerCase();
         msg.channel.send(question.q)
             .then(() => msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] }))

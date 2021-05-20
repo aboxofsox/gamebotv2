@@ -42,6 +42,17 @@ class Main {
             Main.client.login(token);
             Main.client.once('ready', () => {
                 console.log(`Logged in as ${Main.client.user.tag}`);
+                Main.client.user.setPresence({
+                    status: 'online',
+                    afk: false,
+                    activities: [
+                        {
+                            name: 'Red Dead Redemption 3',
+                            type: 'PLAYING',
+                            url: 'https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/capsule_616x353.jpg'
+                        }
+                    ]
+                });
                 Commands_1.default.__init(Main.client);
             });
             Main.client.on('interaction', interaction => Commands_1.default.onCommand(interaction));

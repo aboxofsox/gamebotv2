@@ -17,7 +17,7 @@ export default class Main {
                 afk: false,
                 activities: [
                     {
-                        name: 'Gamebotting',
+                        name: 'Red Dead Redemption 3',
                         type: 'PLAYING',
                         url: 'https://github.com/aboxofsox/gamebotv2'
                     }

@@ -24,8 +24,6 @@ class Commands {
         CommandData_1.CommandData.map(cmd => this.delete(cmd.name));
         CommandData_1.CommandData.map(cmd => client.guilds.cache.get('656355090118213642').commands.create(cmd));
         CommandData_1.CommandData.map(cmd => client.guilds.cache.get('282009242867728384').commands.create(cmd));
-        // Verify
-        this.verify();
     }
     static delete(command) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,9 +34,6 @@ class Commands {
                 }
             });
         });
-    }
-    static verify() {
-        this.client.application.commands.fetch().then(cmd => console.log(cmd));
     }
     static onCommand(interaction) {
         return __awaiter(this, void 0, void 0, function* () {

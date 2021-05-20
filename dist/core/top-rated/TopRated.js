@@ -29,7 +29,6 @@ class TopRated {
             const res = yield node_fetch_1.default(url);
             const json = yield res.json();
             json.results.slice(0, 10).map((i) => games.push({ name: i.name, metacritic: i.metacritic }));
-            console.log(games.sort((a, b) => b.metacritic - a.metacritic));
             return games.sort((a, b) => b.metacritic - a.metacritic);
         });
     }

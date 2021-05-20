@@ -21,8 +21,6 @@ class API {
             const url = `https://api.rawg.io/api/games/${query.replace(/ /g, '-')}?key=${process.env.RAWG_TOKEN}`;
             const res = yield node_fetch_1.default(url);
             const json = yield res.json();
-            console.log(json);
-            // Fixme: is this necessary? 
             if (json.redirect) {
                 return json;
             }
@@ -53,7 +51,6 @@ class API {
             const url = `https://api.rawg.io/api/games/${query}?key=${process.env.RAWG_TOKEN}`;
             const res = yield node_fetch_1.default(url);
             const json = yield res.json();
-            console.log(json);
             this.gbData = {
                 redirect: true,
                 id: json.id,
