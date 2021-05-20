@@ -22,7 +22,6 @@ class TwitchAPI {
         const accessToken = process.env.TWITCH_TOKEN;
         const authProvider = new twitch_auth_1.StaticAuthProvider(clientID, accessToken);
         this.client = new twitch_1.ApiClient({ authProvider: authProvider });
-        console.log(this.client.clientId);
     }
     static __init(username) {
         return __awaiter(this, void 0, void 0, function* () {
